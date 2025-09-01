@@ -1,0 +1,190 @@
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix schema: <http://schema.org/> .
+@prefix secuman: <http://example.com/secuman/ontology#> .
+#@prefix rlevel: <http://example.com/secuman/ontology#> .
+@prefix : <https://w3id.org/secuman/shapes#> .
+
+
+### General
+
+  :SecurityRiskLevelShape
+  a sh:NodeShape ;
+  sh:targetClass secuman:SecurityRiskLevel ;
+  sh:property [
+    sh:path secuman:hasImpactLevel ;
+    sh:message "Every security risk level must have exactly one impact level." ;  
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+  ],  [
+    sh:path secuman:hasLikelihoodFactor ;
+    sh:message "Every security risk level must have exactly one likelihood factor." ;  
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+  ]
+. 
+
+  :LikelihoodFactorShape
+  a sh:NodeShape ;
+  sh:targetClass secuman:LikelihoodFactor ;
+  sh:property [
+    sh:path secuman:hasAttackerProfile ;
+    sh:message "Every likelihood factor must have exactly one attacker profile." ;  
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+  ],  [
+    sh:path secuman:hasVulnerabilityLevel ;
+    sh:message "Every likelihood factor must have exactly one vulnerability level." ;  
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+  ]
+. 
+
+
+### Context
+
+:OperatingEnvironmentShape
+  a sh:NodeShape ;
+  sh:targetClass secuman:OperatingEnvironment ;
+  sh:property [
+    sh:path secuman:hasPhysicalSecurity ;
+    sh:message "Every operating environment must have exactly one physical security." ;  
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+  ], [
+    sh:path secuman:hasNetworkSecurity ;
+    sh:message "Every operating environment must have exactly one network security." ;  
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+  ], [
+    sh:path secuman:hasSystemAndPlatformSecurity ;
+    sh:message "Every operating environment must have exactly one system and platform security." ;  
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+  ]
+. 
+
+:ProductShape
+  a sh:NodeShape ;
+  sh:targetClass secuman:Product ;
+  sh:property [
+    sh:path secuman:hasIdentityAndAccessManagement ;
+    sh:message "Every product must have exactly one identity and access management." ;  
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+  ], [
+    sh:path secuman:hasDataSecurityAndPrivacy ;
+    sh:message "Every product must have exactly one data security and privacy." ;  
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+  ], [
+    sh:path secuman:hasOperationsAndMaintanance ;
+    sh:message "Every product must have exactly one operations and maintanance." ;  
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+  ]
+. 
+
+:ContextSpecificThreatShape
+  a sh:NodeShape ;
+  sh:targetClass secuman:ContextSpecificThreat ;
+  sh:property [
+    sh:path secuman:hasOperatingEnvironment ;
+    sh:message "Every context specific threat must have exactly one operating environment." ;  
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+  ], [
+    sh:path secuman:hasProduct ;
+    sh:message "Every context specific threat must have exactly one product." ;  
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+  ], [
+    sh:path secuman:hasAttackType ;
+    sh:message "Every context specific threat must have exactly one attack type." ;  
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+  ], [
+    sh:path secuman:hasProtectionGoal ;
+    sh:message "Every context specific threat must have exactly one protection goal." ;  
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+  ] 
+. 
+
+:ProtectionGoalShape
+    a sh:NodeShape ;
+    sh:targetClass secuman:ProtectionGoal ;
+    sh:in ( secuman:Availability secuman:Confidentiality secuman:Integrity ) ;
+    sh:message "A protection goal must be one of availability, confidentiality, or integrity" .
+
+
+### Assessment
+
+
+  :AnalyzedSecurityRiskShape
+  a sh:NodeShape ;
+  sh:targetClass secuman:AnalyzedSecurityRisk ;
+  sh:property [
+    sh:path secuman:hasContextSpecificThreat ;
+    sh:message "Every analyzed security risk must have exactly one context specific threat." ;  
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+  ], [
+    sh:path secuman:hasImpact ;
+    sh:message "Every analyzed security risk must have at least one impact." ;  
+    sh:minCount 1 ;
+  ], [
+    sh:path secuman:hasInitialSecurityRiskLevel ;
+    sh:message "Every analyzed security risk must have exactly one initial security risk level." ;  
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+  ], [
+    sh:path secuman:hasInitialLikelihoodFactor ;
+    sh:message "Every analyzed security risk must have exactly one initial likelihood factor." ;  
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+  ], [
+    sh:path secuman:hasComponent ;
+    sh:message "Every analyzed security risk must have exactly one component." ;  
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+  ], [
+    sh:path secuman:hasAsset ;
+    sh:message "Every analyzed security risk must have at least one asset." ;  
+    sh:minCount 1 ;
+      ]
+. 
+
+### Control
+
+
+  :ControlledSecurityRiskShape
+  a sh:NodeShape ;
+  sh:targetClass secuman:ControlledSecurityRisk ;
+  sh:property [
+    sh:path secuman:hasAnalyzedSecurityRisk ;
+    sh:message "Every controlled security risk must have exactly one analyzed security risk." ;  
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+  ],  [
+    sh:path secuman:hasResidualSecurityRiskLevel ;
+    sh:message "Every controlled security risk must have exactly one residual security risk level." ;  
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+  ], [
+    sh:path secuman:hasResidualLikelihoodFactor ;
+    sh:message "Every controlled security risk must have exactly one residual likelihood factor." ;  
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+  ], [
+    sh:path secuman:hasSecurityRiskSDA ;
+    sh:message "Every controlled security risk must have exactly one security risk sda." ;  
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+  ], [
+    sh:path secuman:hasAsset ;
+    sh:message "Every analyzed security risk must have at least one asset." ;  
+    sh:minCount 1 ;
+      ]
+. 
