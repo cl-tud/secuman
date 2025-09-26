@@ -4,7 +4,7 @@
 @prefix schema: <http://schema.org/> .
 @prefix secuman: <http://example.com/secuman/ontology#> .
 #@prefix rlevel: <http://example.com/secuman/ontology#> .
-@prefix : <https://w3id.org/secuman/shapes#> .
+@prefix : <http://example.com/secuman/shapes#> .
 
 
 ### General
@@ -79,8 +79,8 @@
     sh:minCount 1 ;
     sh:maxCount 1 ;
   ], [
-    sh:path secuman:hasOperationsAndMaintanance ;
-    sh:message "Every product must have exactly one operations and maintanance." ;  
+    sh:path secuman:hasOperationsAndMaintenance ;
+    sh:message "Every product must have exactly one operations and maintenance." ;  
     sh:minCount 1 ;
     sh:maxCount 1 ;
   ]
@@ -139,12 +139,7 @@
     sh:message "Every analyzed security risk must have exactly one initial security risk level." ;  
     sh:minCount 1 ;
     sh:maxCount 1 ;
-  ], [
-    sh:path secuman:hasInitialLikelihoodFactor ;
-    sh:message "Every analyzed security risk must have exactly one initial likelihood factor." ;  
-    sh:minCount 1 ;
-    sh:maxCount 1 ;
-  ], [
+  ],  [
     sh:path secuman:hasComponent ;
     sh:message "Every analyzed security risk must have exactly one component." ;  
     sh:minCount 1 ;
@@ -172,19 +167,51 @@
     sh:message "Every controlled security risk must have exactly one residual security risk level." ;  
     sh:minCount 1 ;
     sh:maxCount 1 ;
-  ], [
-    sh:path secuman:hasResidualLikelihoodFactor ;
-    sh:message "Every controlled security risk must have exactly one residual likelihood factor." ;  
+  ],  [
+    sh:path secuman:hasSecuritySDA ;
+    sh:message "Every controlled security risk must have exactly one security sda." ;  
     sh:minCount 1 ;
     sh:maxCount 1 ;
-  ], [
-    sh:path secuman:hasSecurityRiskSDA ;
-    sh:message "Every controlled security risk must have exactly one security risk sda." ;  
-    sh:minCount 1 ;
-    sh:maxCount 1 ;
-  ], [
-    sh:path secuman:hasAsset ;
-    sh:message "Every analyzed security risk must have at least one asset." ;  
-    sh:minCount 1 ;
-      ]
+  ]
 . 
+
+### SDAs
+
+  :SecuritySDAShape
+  a sh:NodeShape ;
+  sh:targetClass secuman:SecuritySDA ;
+  sh:property [
+    sh:path secuman:hasSecurityFacet ;
+    sh:message "Every security  SDA must have at least one security facet" ;  
+    sh:minCount 1 ;
+  ] , [
+    sh:path secuman:hasStrategy ;
+    sh:message "Every security  SDA must at most one strategy" ;  
+    sh:maxCount 1 ;
+  ] , [
+    sh:path secuman:hasInterventionMethod ;
+    sh:message "Every security  SDA must at most one intervention method" ;  
+    sh:maxCount 1 ;
+  ] , [
+    sh:path secuman:hasLocationOfIntervention ;
+    sh:message "Every security  SDA must at most one location of intervention" ;  
+    sh:maxCount 1 ;
+  ] , [
+    sh:path secuman:hasOrganisationalContext ;
+    sh:message "Every security  SDA must at most one organisational context" ;  
+    sh:maxCount 1 ;
+  ] , [
+    sh:path secuman:hasAssumption ;
+    sh:message "Every security  SDA must at most one assumption" ;  
+    sh:maxCount 1 ;
+  ] , [
+    sh:path secuman:hasImpactOnSafety ;
+    sh:message "Every security  SDA must at most one impact on safety" ;  
+    sh:maxCount 1 ;
+  ], [
+    sh:path secuman:hasTestReport ;
+    sh:message "Every security  SDA must at most one test report" ;  
+    sh:maxCount 1 ;
+  ]
+. 
+
