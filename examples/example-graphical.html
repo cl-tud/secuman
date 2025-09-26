@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en" prefix="sec: http://example.com/secuman/ontology# rdm: https://w3id.org/riskman/ontology# rdfs: http://www.w3.org/2000/01/rdf-schema# ex: http://example.org#">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Risk Graph – HTML+RDFa</title>
+<style>
+:root{--ink:#0f172a;--muted:#475569;--line:#e2e8f0;--bg:#ffffff;--lane:#f8fafc;}
+*{box-sizing:border-box}
+body{font-family:Inter,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:var(--ink);margin:0;background:var(--bg);}
+.container{max-width:1100px;margin:0 auto;padding:20px;}
+header{padding-bottom:12px;border-bottom:2px solid #334155;margin-bottom:16px;}
+h1{font-size:22px;margin:0 0 6px 0;}
+.controls{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;}
+button{padding:8px 10px;border:1px solid var(--line);background:#fff;border-radius:8px;cursor:pointer;}
+.graph-wrap{position:relative;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff;}
+svg{display:block;width:100%;height:700px;}
+.lane{fill:var(--lane);}
+.lane-title{font-size:12px;fill:#334155;font-weight:700;}
+.link{stroke:#94a3b8;stroke-width:1.2;fill:none;marker-end:url(#arrow);opacity:0.9;}
+.link:hover{stroke:#0ea5e9;opacity:1;}
+.node{cursor:grab;}
+.node rect{fill:#ffffff;stroke:#cbd5e1;stroke-width:1;rx:10;ry:10;filter:url(#shadow);}
+.node text{font-size:12px;fill:#0f172a;}
+.node .type{font-size:10px;fill:#64748b;}
+.node:hover rect{stroke:#0ea5e9;stroke-width:1.5;}
+.pred-label{font-size:10px;fill:#475569;opacity:0.9;}
+.legend{font-size:12px;color:#475569;margin-top:8px;}
+@media (max-width: 720px){ svg{height:900px;} }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>Risk Graph</h1>
+    <div class="controls">
+      <button id="fit">Fit to View</button>
+      <button id="download">Download SVG</button>
+    </div>
+  </header>
+  <div class="graph-wrap">
+    <svg id="graph" xmlns="http://www.w3.org/2000/svg" version="1.1">
+      <defs>
+        <marker id="arrow" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#94a3b8"></path>
+        </marker>
+        <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+          <feDropShadow dx="0" dy="1" stdDeviation="1" flood-color="#e2e8f0" flood-opacity="1"/>
+        </filter>
+      </defs>
+      <g id="viewport">
+        <g id="lanes"></g> 
+        <g id="edges"></g>
+        <g id="nodes"></g>
+      </g>
+    </svg>
+  </div>
+ <div class="legend">Grouped lanes: ContextSpecificThreat, AnalyzedSecurityRisk, ControlledSecurityRisk, SecuritySDA. Drag nodes to reposition; hover links to see predicates.</div>
+</div>  
+<script>
+const data = {"nodes": [{"id": "http://example.org#contextSpecificThreat1", "label": "ContextSpecificThreat", "type": "http://example.com/secuman/ontology#ContextSpecificThreat", "group": "ContextSpecificThreat"}, {"id": "http://example.org#operatingEnvironment1", "label": "OperatingEnvironment", "type": "http://example.com/secuman/ontology#OperatingEnvironment", "group": "ContextSpecificThreat"}, {"id": "http://example.org#product1", "label": "Product", "type": "http://example.com/secuman/ontology#Product", "group": "ContextSpecificThreat"}, {"id": "http://example.org#attackType1", "label": "Physical access", "type": "http://example.com/secuman/ontology#AttackType", "group": "ContextSpecificThreat"}, {"id": "http://example.com/secuman/ontology#Confidentiality", "label": "Confidentiality", "type": "http://example.com/secuman/ontology#ProtectionGoal", "group": "ContextSpecificThreat"}, {"id": "http://example.org#networkSecurity1", "label": "No network connectivity", "type": "http://example.com/secuman/ontology#NetworkSecurity", "group": "ContextSpecificThreat"}, {"id": "http://example.org#physicalSecurity1", "label": "F\u00fcr alles medizinisches Personal im Zugriff", "type": "http://example.com/secuman/ontology#PhysicalSecurity", "group": "ContextSpecificThreat"}, {"id": "http://example.org#systemAndPlatformSecurity1", "label": "Standard Windows, no additional", "type": "http://example.com/secuman/ontology#SystemAndPlatformSecurity", "group": "ContextSpecificThreat"}, {"id": "http://example.org#identityAndAccessManagement1", "label": "No existing measures", "type": "http://example.com/secuman/ontology#IdentityAndAccessManagement", "group": "ContextSpecificThreat"}, {"id": "http://example.org#dataSecurityAndPrivacy1", "label": "No existing measures", "type": "http://example.com/secuman/ontology#DataSecurityAndPrivacy", "group": "ContextSpecificThreat"}, {"id": "http://example.org#operationsAndMaintenance1", "label": "No existing measures", "type": "http://example.com/secuman/ontology#OperationsAndMaintenance", "group": "ContextSpecificThreat"}, {"id": "http://example.org#analyzedSecurityRisk1", "label": "AnalyzedSecurityRisk", "type": "http://example.com/secuman/ontology#AnalyzedSecurityRisk", "group": "AnalyzedSecurityRisk"}, {"id": "http://example.org#asset1", "label": "Patientendaten", "type": "http://example.com/secuman/ontology#Asset", "group": "AnalyzedSecurityRisk"}, {"id": "http://example.org#component1", "label": "User Interface", "type": "http://example.com/secuman/ontology#Component", "group": "AnalyzedSecurityRisk"}, {"id": "http://example.org#impact1", "label": "Patientendaten ausgelesen (Diebstahl), DSGVO Versto\u00df", "type": "http://example.com/secuman/ontology#Impact", "group": "AnalyzedSecurityRisk"}, {"id": "http://example.org#securityRiskLevel2", "label": "SecurityRiskLevel", "type": "http://example.com/secuman/ontology#SecurityRiskLevel", "group": "AnalyzedSecurityRisk"}, {"id": "http://example.org#impactLevel1", "label": "Medium", "type": "http://example.com/secuman/ontology#ImpactLevel", "group": "AnalyzedSecurityRisk"}, {"id": "http://example.org#likelihoodFactor2", "label": "LikelihoodFactor", "type": "http://example.com/secuman/ontology#LikelihoodFactor", "group": "AnalyzedSecurityRisk"}, {"id": "http://example.org#attackerProfile2", "label": "Script Kiddy", "type": "http://example.com/secuman/ontology#AttackerProfile", "group": "AnalyzedSecurityRisk"}, {"id": "http://example.org#vulnerabilityLevel1", "label": "Bekannt/ leicht detektierbar/ limited access = 3", "type": "http://example.com/secuman/ontology#VulnerabilityLevel", "group": "AnalyzedSecurityRisk"}, {"id": "http://example.org#controlledSecurityRisk1", "label": "ControlledSecurityRisk", "type": "http://example.com/secuman/ontology#ControlledSecurityRisk", "group": "ControlledSecurityRisk"}, {"id": "http://example.org#securityRiskLevel1", "label": "SecurityRiskLevel", "type": "http://example.com/secuman/ontology#SecurityRiskLevel", "group": "ControlledSecurityRisk"}, {"id": "http://example.org#sda0", "label": "SecuritySDA", "type": "http://example.com/secuman/ontology#SecuritySDA", "group": "SecuritySDA"}, {"id": "http://example.org#likelihoodFactor1", "label": "LikelihoodFactor", "type": "http://example.com/secuman/ontology#LikelihoodFactor", "group": "ControlledSecurityRisk"}, {"id": "http://example.org#attackerProfile1", "label": "Pentester", "type": "http://example.com/secuman/ontology#AttackerProfile", "group": "ControlledSecurityRisk"}, {"id": "http://example.org#strategy1", "label": "Durch Authentisierung/ Authentifizierung, Likelihood reduzieren, pr\u00e4ventiv, damit nur befugte/vertrauensw\u00fcrdige Personen Zugriff haben", "type": "http://example.com/secuman/ontology#Strategy", "group": "SecuritySDA"}, {"id": "http://example.org#testReport1", "label": "Verweis auf Testergebnis (nur starke PW  werden akzeptiert, nur Anmeldung mit zweitem Faktor m\u00f6glich), Verweis auf Penetrationstest", "type": "http://example.com/secuman/ontology#TestReport", "group": "SecuritySDA"}, {"id": "http://example.org#sda1", "label": "SecuritySDA", "type": "http://example.com/secuman/ontology#SecuritySDA", "group": "SecuritySDA"}, {"id": "http://example.org#strategy2", "label": "Durch Passwort Sicherheit, Likelihood reduzieren, pr\u00e4ventiv, damit nur befugte/vertrauensw\u00fcrdige Personen Zugriff haben", "type": "http://example.com/secuman/ontology#Strategy", "group": "SecuritySDA"}, {"id": "http://example.org#assumption1", "label": "Identit\u00e4ten werden established; PW nicht auf Post-it am Ger\u00e4t", "type": "http://example.com/secuman/ontology#Assumption", "group": "SecuritySDA"}, {"id": "http://example.org#interventionMethod1", "label": "Einf\u00fchrung einer Passwort-Policy (mind. 12 Zeichen, Sonderzeichen, Ablauf nach 90 Tagen) ", "type": "http://example.com/secuman/ontology#InterventionMethod", "group": "SecuritySDA"}, {"id": "http://example.org#locationOfIntervention1", "label": "Ort: Login-Service des internen Mitarbeitersystems (\u201eintranet.company.com/login\u201c)", "type": "http://example.com/secuman/ontology#LocationOfIntervention", "group": "SecuritySDA"}, {"id": "http://example.org#organisationalContext1", "label": "Kontext: Konzernrichtlinie \u201eAccess Control 101\u201c. Verantwortlich: IT-Security-Team. Lebenszyklusphase: Operation", "type": "http://example.com/secuman/ontology#OrganisationalContext", "group": "SecuritySDA"}, {"id": "http://example.org#impactOnSafety1", "label": "Ja", "type": "http://example.com/secuman/ontology#ImpactOnSafety", "group": "SecuritySDA"}, {"id": "http://example.org#implementationManifest1", "label": "Verweis auf Konfiguration, dass Verschl\u00fcsselung aktiviert ist.", "type": "https://w3id.org/riskman/ontology#ImplementationManifest", "group": "SecuritySDA"}, {"id": "http://example.org#sda2", "label": "SecuritySDA", "type": "http://example.com/secuman/ontology#SecuritySDA", "group": "SecuritySDA"}, {"id": "http://example.org#strategy3", "label": "Durch zwei Factor Authentifizierung, Likelihood reduzieren, pr\u00e4ventiv, damit nur befugte/vertrauensw\u00fcrdige Personen Zugriff haben", "type": "http://example.com/secuman/ontology#Strategy", "group": "SecuritySDA"}, {"id": "http://example.org#assumption2", "label": "Authenticator- App wird nicht auf fest installiertem Ger\u00e4t direkt daneben genutzt", "type": "http://example.com/secuman/ontology#Assumption", "group": "SecuritySDA"}, {"id": "http://example.org#interventionMethod2", "label": "Aktivierung von 2FA mit Authenticator-App", "type": "http://example.com/secuman/ontology#InterventionMethod", "group": "SecuritySDA"},  {"id": "http://example.org#implementationManifest2", "label": "Verweis auf Konfiguration, dass zweiter Faktor aktiviert ist", "type": "https://w3id.org/riskman/ontology#ImplementationManifest", "group": "SecuritySDA"}], "edges": [{"source": "http://example.org#contextSpecificThreat1", "target": "http://example.org#operatingEnvironment1", "predicate": "hasOperatingEnvironment"}, {"source": "http://example.org#contextSpecificThreat1", "target": "http://example.org#product1", "predicate": "hasProduct"}, {"source": "http://example.org#contextSpecificThreat1", "target": "http://example.org#attackType1", "predicate": "hasAttackType"}, {"source": "http://example.org#contextSpecificThreat1", "target": "http://example.com/secuman/ontology#Confidentiality", "predicate": "hasProtectionGoal"}, {"source": "http://example.org#operatingEnvironment1", "target": "http://example.org#networkSecurity1", "predicate": "hasNetworkSecurity"}, {"source": "http://example.org#operatingEnvironment1", "target": "http://example.org#physicalSecurity1", "predicate": "hasPhysicalSecurity"}, {"source": "http://example.org#operatingEnvironment1", "target": "http://example.org#systemAndPlatformSecurity1", "predicate": "hasSystemAndPlatformSecurity"}, {"source": "http://example.org#product1", "target": "http://example.org#identityAndAccessManagement1", "predicate": "hasIdentityAndAccessManagement"}, {"source": "http://example.org#product1", "target": "http://example.org#dataSecurityAndPrivacy1", "predicate": "hasDataSecurityAndPrivacy"}, {"source": "http://example.org#product1", "target": "http://example.org#operationsAndMaintenance1", "predicate": "hasOperationsAndMaintenance"}, {"source": "http://example.org#analyzedSecurityRisk1", "target": "http://example.org#contextSpecificThreat1", "predicate": "hasContextSpecificThreat"}, {"source": "http://example.org#analyzedSecurityRisk1", "target": "http://example.org#asset1", "predicate": "hasAsset"}, {"source": "http://example.org#analyzedSecurityRisk1", "target": "http://example.org#component1", "predicate": "hasComponent"}, {"source": "http://example.org#analyzedSecurityRisk1", "target": "http://example.org#impact1", "predicate": "hasImpact"}, {"source": "http://example.org#analyzedSecurityRisk1", "target": "http://example.org#securityRiskLevel2", "predicate": "hasInitialSecurityRiskLevel"}, {"source": "http://example.org#securityRiskLevel2", "target": "http://example.org#impactLevel1", "predicate": "hasImpactLevel"}, {"source": "http://example.org#securityRiskLevel2", "target": "http://example.org#likelihoodFactor2", "predicate": "hasLikelihoodFactor"}, {"source": "http://example.org#likelihoodFactor2", "target": "http://example.org#attackerProfile2", "predicate": "hasAttackerProfile"}, {"source": "http://example.org#likelihoodFactor2", "target": "http://example.org#vulnerabilityLevel1", "predicate": "hasVulnerabilityLevel"}, {"source": "http://example.org#controlledSecurityRisk1", "target": "http://example.org#analyzedSecurityRisk1", "predicate": "hasAnalyzedSecurityRisk"}, {"source": "http://example.org#controlledSecurityRisk1", "target": "http://example.org#securityRiskLevel1", "predicate": "hasResidualSecurityRiskLevel"}, {"source": "http://example.org#controlledSecurityRisk1", "target": "http://example.org#sda0", "predicate": "hasSecuritySDA"}, {"source": "http://example.org#securityRiskLevel1", "target": "http://example.org#impactLevel1", "predicate": "hasImpactLevel"}, {"source": "http://example.org#securityRiskLevel1", "target": "http://example.org#likelihoodFactor1", "predicate": "hasLikelihoodFactor"}, {"source": "http://example.org#likelihoodFactor1", "target": "http://example.org#attackerProfile1", "predicate": "hasAttackerProfile"}, {"source": "http://example.org#likelihoodFactor1", "target": "http://example.org#vulnerabilityLevel1", "predicate": "hasVulnerabilityLevel"}, {"source": "http://example.org#sda0", "target": "http://example.org#strategy1", "predicate": "hasStrategy"}, {"source": "http://example.org#sda0", "target": "http://example.org#testReport1", "predicate": "hasTestReport"}, {"source": "http://example.org#sda0", "target": "http://example.org#sda1", "predicate": "hasSubSDA"}, {"source": "http://example.org#sda1", "target": "http://example.org#strategy2", "predicate": "hasStrategy"}, {"source": "http://example.org#sda1", "target": "http://example.org#assumption1", "predicate": "hasAssumption"}, {"source": "http://example.org#sda1", "target": "http://example.org#interventionMethod1", "predicate": "hasInterventionMethod"}, {"source": "http://example.org#sda1", "target": "http://example.org#locationOfIntervention1", "predicate": "hasLocationOfIntervention"}, {"source": "http://example.org#sda1", "target": "http://example.org#organisationalContext1", "predicate": "hasOrganisationalContext"}, {"source": "http://example.org#sda1", "target": "http://example.org#impactOnSafety1", "predicate": "hasImpactOnSafety"}, {"source": "http://example.org#sda1", "target": "http://example.org#implementationManifest1", "predicate": "hasImplementationManifest"}, {"source": "http://example.org#sda0", "target": "http://example.org#sda2", "predicate": "hasSubSDA"}, {"source": "http://example.org#sda2", "target": "http://example.org#strategy3", "predicate": "hasStrategy"}, {"source": "http://example.org#sda2", "target": "http://example.org#assumption2", "predicate": "hasAssumption"}, {"source": "http://example.org#sda2", "target": "http://example.org#interventionMethod2", "predicate": "hasInterventionMethod"}, {"source": "http://example.org#sda2", "target": "http://example.org#locationOfIntervention1", "predicate": "hasLocationOfIntervention"}, {"source": "http://example.org#sda2", "target": "http://example.org#organisationalContext1", "predicate": "hasOrganisationalContext"}, {"source": "http://example.org#sda2", "target": "http://example.org#impactOnSafety1", "predicate": "hasImpactOnSafety"}, {"source": "http://example.org#sda2", "target": "http://example.org#implementationManifest2", "predicate": "hasImplementationManifest"}]};
+
+
+
+const groups = ["ContextSpecificThreat","AnalyzedSecurityRisk","ControlledSecurityRisk","SecuritySDA"];
+const laneTitles = {
+  ContextSpecificThreat: "ContextSpecificThreat",
+  AnalyzedSecurityRisk: "AnalyzedSecurityRisk",
+  ControlledSecurityRisk: "ControlledSecurityRisk",
+  SecuritySDA: "SecuritySDA"
+};
+
+const svg = document.getElementById('graph');
+const viewport = document.getElementById('viewport');
+const lanesG = document.getElementById('lanes');
+const edgesG = document.getElementById('edges');
+const nodesG = document.getElementById('nodes');
+
+function size() { return svg.getBoundingClientRect(); }
+
+function drawLanes(){
+  const {width, height} = size();
+  const laneW = width / groups.length;
+  lanesG.innerHTML = "";
+  groups.forEach((g,i)=>{
+    const x = i*laneW;
+    lanesG.insertAdjacentHTML('beforeend', `
+      <g>
+        <rect class="lane" x="${x}" y="0" width="${laneW}" height="${height}" />
+        <text class="lane-title" x="${x+10}" y="18">${laneTitles[g]}</text>
+      </g>
+    `);
+  });
+}
+
+function wrapText(t, maxWidth){
+  const words = (t||"").split(/\s+/);
+  const lines = [];
+  let line = [];
+  let len = 0;
+  words.forEach(w=>{
+    const wlen = w.length + 1;
+    if(len + wlen > maxWidth){ lines.push(line.join(" ")); line = [w]; len = w.length; }
+    else { line.push(w); len += wlen; }
+  });
+  if(line.length) lines.push(line.join(" "));
+  return lines;
+}
+
+const laneStacks = {ContextSpecificThreat:0,AnalyzedSecurityRisk:0,ControlledSecurityRisk:0,SecuritySDA:0};
+const laneYStep = 90;
+function laneX(group){
+  const {width} = size();
+  const laneW = width / groups.length;
+  const idx = groups.indexOf(group);
+  return idx * laneW + 20;
+}
+function laneWidth(){ const {width} = size(); return width / groups.length - 40; }
+
+const nodesMap = new Map();
+data.nodes.forEach(n => {
+  const grp = groups.includes(n.group) ? n.group : "SecuritySDA";
+  const x = laneX(grp);
+  const y = 40 + (laneStacks[grp]++) * laneYStep;
+  const w = laneWidth();
+  const label = n.label || (n.type.split("#").pop());
+  const type = (n.type.split("#").pop());
+  const lines = wrapText(label, Math.max(18, Math.floor(w/7.5)));
+  const h = 14 + lines.length*14 + 18;
+  nodesMap.set(n.id, { ...n, x, y, w, h, lines, type, group: grp });
+});
+
+function drawNodes(){
+  nodesG.innerHTML = "";
+  nodesMap.forEach((n)=>{
+    const g = document.createElementNS("http://www.w3.org/2000/svg","g");
+    g.setAttribute("class","node");
+    g.setAttribute("transform",`translate(${n.x},${n.y})`);
+    g.setAttribute("about", n.id);
+    g.setAttribute("typeof", n.type.includes('#') ? `sec:${n.type.split('#').pop()}` : "");
+    const rect = document.createElementNS("http://www.w3.org/2000/svg","rect");
+    rect.setAttribute("width", n.w);
+    rect.setAttribute("height", n.h);
+    g.appendChild(rect);
+    const typeText = document.createElementNS("http://www.w3.org/2000/svg","text");
+    typeText.setAttribute("class","type");
+    typeText.setAttribute("x",8);
+    typeText.setAttribute("y",14);
+    typeText.textContent = n.type.split("#").pop();
+    g.appendChild(typeText);
+    let yy = 30;
+    n.lines.forEach(line=>{
+      const t = document.createElementNS("http://www.w3.org/2000/svg","text");
+      t.setAttribute("x",8);
+      t.setAttribute("y",yy);
+      t.setAttribute("property","rdfs:label");
+      t.textContent = line;
+      g.appendChild(t);
+      yy += 14;
+    });
+    let dragging = false, ox=0, oy=0;
+    g.addEventListener('mousedown',(e)=>{ dragging=true; ox=e.clientX - n.x; oy=e.clientY - n.y; g.style.cursor='grabbing'; });
+    window.addEventListener('mouseup',()=>{ dragging=false; g.style.cursor='grab'; });
+    window.addEventListener('mousemove',(e)=>{
+      if(!dragging) return;
+      n.x = e.clientX - ox; n.y = e.clientY - oy;
+      g.setAttribute("transform",`translate(${n.x},${n.y})`);
+      drawEdges();
+    });
+    nodesG.appendChild(g);
+  });
+}
+
+function centerOf(n){ return {cx:n.x + n.w/2, cy:n.y + n.h/2}; }
+
+function drawEdges(){
+  edgesG.innerHTML = "";
+  data.edges.forEach(e=>{
+    const s = nodesMap.get(e.source);
+    const t = nodesMap.get(e.target);
+    if(!s || !t) return;
+    const {cx: x1, cy: y1} = centerOf(s);
+    const {cx: x2, cy: y2} = centerOf(t);
+    const dx = (x2 - x1) * 0.5;
+    const c1x = x1 + dx, c1y = y1;
+    const c2x = x2 - dx, c2y = y2;
+    const path = document.createElementNS("http://www.w3.org/2000/svg","path");
+    path.setAttribute("class","link");
+    path.setAttribute("d",`M ${x1} ${y1} C ${c1x} ${c1y}, ${c2x} ${c2y}, ${x2} ${y2}`);
+    edgesG.appendChild(path);
+    const midx = (x1 + x2)/2, midy = (y1 + y2)/2;
+    const txt = document.createElementNS("http://www.w3.org/2000/svg","text");
+    txt.setAttribute("class","pred-label");
+    txt.setAttribute("x", midx);
+    txt.setAttribute("y", midy - 4);
+    txt.setAttribute("text-anchor","middle");
+    txt.textContent = e.predicate;
+    edgesG.appendChild(txt);
+  });
+}
+
+function fitView(){
+  const bbox = viewport.getBBox();
+  const pad = 20;
+  const vb = [bbox.x-pad, bbox.y-pad, bbox.width+pad*2, bbox.height+pad*2].join(" ");
+  svg.setAttribute("viewBox", vb);
+}
+document.getElementById('fit').addEventListener('click', fitView);
+
+document.getElementById('download').addEventListener('click', ()=>{
+  const svgClone = svg.cloneNode(true);
+  const blob = new Blob([new XMLSerializer().serializeToString(svgClone)], {type:'image/svg+xml'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'risk-graph.svg'; a.click();
+  setTimeout(()=>URL.revokeObjectURL(url), 1000);
+});
+
+
+window.addEventListener('resize', ()=>{ drawNodes(); drawEdges(); });
+drawNodes(); drawEdges(); fitView();
+</script>
+</body>
+</html>
