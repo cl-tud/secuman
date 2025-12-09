@@ -259,6 +259,7 @@ _:secunet
             rdfs:label "has impact" .
 
 
+
 ###  http://example.com/secuman/ontology#hasInitialSecurityRiskLevel
 :hasInitialSecurityRiskLevel rdf:type owl:ObjectProperty ;
             rdfs:domain :AnalyzedSecurityRisk ;
@@ -361,9 +362,9 @@ _:secunet
 
 ###  http://example.com/secuman/ontology#hasImpactOnSafety
 :hasImpactOnSafety rdf:type owl:ObjectProperty ;
-            rdfs:domain :SecuritySDA ;
-            rdfs:range :ImpactOnSafety ;
-            rdfs:comment "Links a security SDA to its impact on safety." ;
+            rdfs:domain :HasImpactOnSafetyDomain ;
+            rdfs:range :YesNo ;
+            rdfs:comment "Links an impact on safety domain object (in particular: impact or a security SDA) to its impact on safety (yes or no value)." ;
             rdfs:label "has impact on safety" .
 
 
@@ -427,6 +428,19 @@ _:secunet
                             owl:someValuesFrom owl:Thing
                         ] ) ;
 ] rdfs:subClassOf :LikelihoodFactor.
+
+###  http://example.com/secuman/ontology#HasImpactOnSafetyDomain
+:HasImpactOnSafetyDomain a owl:Class .
+:LikelihoodFactor rdf:type owl:Class ;
+    rdfs:label "Has impact on safety domain" ;
+    rdfs:comment "Has impact on safety domain: auxiliary class to define domain of has impact on safety" .
+
+
+:SecuritySDA rdfs:subClassOf :HasImpactOnSafetyDomain .
+:Impact      rdfs:subClassOf :HasImpactOnSafetyDomain .
+
+
+
 
 
 ### Context
@@ -591,8 +605,19 @@ _:secunet
 :hasLocationOfIntervention   rdfs:subPropertyOf :hasSecurityFacet .
 :hasOrganisationalContext rdfs:subPropertyOf :hasSecurityFacet .
 :hasAssumption rdfs:subPropertyOf :hasSecurityFacet .
-:hasImpactOnSafety rdfs:subPropertyOf :hasSecurityFacet .
 :hasTestReport rdfs:subPropertyOf :hasSecurityFacet .
+#:hasImpactOnSafety rdfs:subPropertyOf :hasSecurityFacet .
+[
+  a owl:Class ;
+  owl:intersectionOf ( :SecuritySDA [ a owl:Restriction ;
+                                      owl:onProperty :hasImpactOnSafety ;
+                                      owl:someValuesFrom owl:Thing ] )
+] rdfs:subClassOf [
+  a owl:Restriction ;
+  owl:onProperty :hasSecurityFacet ;
+  owl:someValuesFrom owl:Thing
+] .
+
 
 
 ### http://example.com/secuman/ontology#SecuritySDA
@@ -656,3 +681,11 @@ _:secunet
 ###  http://example.com/secuman/ontology#Integrity
 :Integrity rdf:type owl:NamedIndividual , :ProtectionGoal ;
                           rdfs:label "Integrity" .
+
+###  http://example.com/secuman/ontology#Yes
+:Yes rdf:type owl:NamedIndividual , :YesNo ;
+                          rdfs:label "Yes" .
+
+###  http://example.com/secuman/ontology#No
+:No rdf:type owl:NamedIndividual , :YesNo ;
+                          rdfs:label "No" .

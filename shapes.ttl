@@ -9,6 +9,13 @@
 
 ### General
 
+:YesNoShape
+    a sh:NodeShape ;
+    sh:targetClass secuman:YesNo ;
+    sh:in ( secuman:Yes secuman:No ) ;
+    sh:message "A YesNO must be one of Yes or No" .
+
+
   :SecurityRiskLevelShape
   a sh:NodeShape ;
   sh:targetClass secuman:SecurityRiskLevel ;
