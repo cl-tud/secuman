@@ -326,55 +326,54 @@ _:secunet
 
 
 
-
-###  http://example.com/secuman/ontology#hasSecuritySDA
-:hasSecuritySDA rdf:type owl:ObjectProperty ;
+###  http://example.com/secuman/ontology#isMitigatedBy
+:isMitigatedBy rdf:type owl:ObjectProperty ;
             rdfs:domain :ControlledSecurityRisk ;
-            rdfs:range :SecuritySDA ;
-            rdfs:comment "Links a controlled security risk to its security SDA." ;
-            rdfs:label "has security sda" .
+            rdfs:range :SecDA ;
+            rdfs:comment "Links a controlled security risk to its secure design argument." ;
+            rdfs:label "is mitigated by" .
 
 
-### SDAs
+### SecDAs
 
 ###  http://example.com/secuman/ontology#hasStrategy
 :hasStrategy rdf:type owl:ObjectProperty ;
-            rdfs:domain :SecuritySDA ;
+            rdfs:domain :SecDA ;
             rdfs:range :Strategy ;
             rdfs:comment "Links a security SDA to its strategy." ;
             rdfs:label "has strategy" .
 
 ###  http://example.com/secuman/ontology#hasInterventionMethod
 :hasInterventionMethod rdf:type owl:ObjectProperty ;
-            rdfs:domain :SecuritySDA ;
+            rdfs:domain :SecDA ;
             rdfs:range :InterventionMethod ;
             rdfs:comment "Links a security SDA to its intervention method." ;
             rdfs:label "has intervention method" .
 
 ###  http://example.com/secuman/ontology#hasLocationOfIntervention
 :hasLocationOfIntervention rdf:type owl:ObjectProperty ;
-            rdfs:domain :SecuritySDA ;
+            rdfs:domain :SecDA ;
             rdfs:range :LocationOfIntervention ;
             rdfs:comment "Links a security SDA to its location of intervention." ;
             rdfs:label "has location of intervention" .
 
 ###  http://example.com/secuman/ontology#hasOrganisationalContext
 :hasOrganissationalContext rdf:type owl:ObjectProperty ;
-            rdfs:domain :SecuritySDA ;
+            rdfs:domain :SecDA ;
             rdfs:range :OrganisationalContext ;
             rdfs:comment "Links a security SDA to its organisational context." ;
             rdfs:label "has organisational context" .
 
 ###  http://example.com/secuman/ontology#hasAssumption
 :hasAssumption rdf:type owl:ObjectProperty ;
-            rdfs:domain :SecuritySDA ;
+            rdfs:domain :SecDA ;
             rdfs:range :Assumption ;
             rdfs:comment "Links a security SDA to its assumption." ;
             rdfs:label "has assumption" .
 
 ###  http://example.com/secuman/ontology#hasTestReport
 :hasTestReport rdf:type owl:ObjectProperty ;
-            rdfs:domain :SecuritySDA ;
+            rdfs:domain :SecDA ;
             rdfs:range :TestReport ;
             rdfs:comment "Links a security SDA to its test report." ;
             rdfs:label "has test report" .
@@ -390,7 +389,7 @@ _:secunet
 ### http://example.com/secuman/ontology#hasSecurityFacet
 #Auxilliary: SecurityFacet is one of Strategy, InterventionMethod, LocationOfIntervention, OrganisationalContext, Assumption, TestReport 
 :hasSecurityFacet rdf:type owl:ObjectProperty ;
-  rdfs:domain :SecuritySDA ;          
+  rdfs:domain :SecDA ;          
   rdfs:range  :SecurityFacet .
         
 
@@ -455,7 +454,7 @@ _:secunet
 #:HasImpactOnSafetyDomain a owl:Class .
 #    rdfs:label "Has impact on safety domain" ;
 #    rdfs:comment "Has impact on safety domain: auxiliary class to define domain of has impact on safety" .
-#:SecuritySDA rdfs:subClassOf :HasImpactOnSafetyDomain .
+#:SecDA rdfs:subClassOf :HasImpactOnSafetyDomain .
 #:Impact      rdfs:subClassOf :HasImpactOnSafetyDomain .
 
 
@@ -579,7 +578,7 @@ _:secunet
                             owl:someValuesFrom owl:Thing
                         ]
                         [ rdf:type owl:Restriction ;
-                            owl:onProperty :hasSecuritySDA;
+                            owl:onProperty :hasSecDA;
                             owl:someValuesFrom owl:Thing
                         ] ) ;
 ] rdfs:subClassOf :ControlledSecurityRisk.
@@ -630,7 +629,7 @@ _:secunet
 #:hasImpactOnSafety rdfs:subPropertyOf :hasSecurityFacet .
 [
   a owl:Class ;
-  owl:intersectionOf ( :SecuritySDA [ a owl:Restriction ;
+  owl:intersectionOf ( :SecDA [ a owl:Restriction ;
                                       owl:onProperty :hasImpactOnSafety ;
                                       owl:someValuesFrom owl:Thing ] )
 ] rdfs:subClassOf [
@@ -641,8 +640,8 @@ _:secunet
 
 
 
-### http://example.com/secuman/ontology#SecuritySDA
-:SecuritySDA rdf:type owl:Class ;
+### http://example.com/secuman/ontology#SecDA
+:SecDA rdf:type owl:Class ;
   rdfs:label "Security SDA" ;
   rdfs:comment "Security specific SDA: an SDA with a security facet." ;
   rdfs:subClassOf riskman:SDA .
@@ -653,7 +652,7 @@ _:secunet
 :SecurityRiskSDA rdf:type owl:Class ;
          rdfs:label "Security risk SDA" ;
          rdfs:comment "Security specific risk SDA." ;
-         rdfs:subClassOf riskman:RiskSDA, :SecuritySDA .
+         rdfs:subClassOf riskman:RiskSDA, :SecDA .
 
 ###  http://example.com/secuman/ontology#SecurityRiskSDAI
 :SecurityRiskSDAI rdf:type owl:Class ;
@@ -672,7 +671,7 @@ _:secunet
 :SecurityAssuranceSDA rdf:type owl:Class ;
     rdfs:label "Security assurance SDA" ;
     rdfs:comment "Security specific assurance SDA." ;
-    rdfs:subClassOf riskman:AssuranceSDA, :SecuritySDA .                  
+    rdfs:subClassOf riskman:AssuranceSDA, :SecDA .                  
 
 ###  http://example.com/secuman/ontology#SecurityAssuranceSDAI
 :SecurityAssuranceSDAI rdf:type owl:Class ;

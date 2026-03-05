@@ -202,8 +202,8 @@
     sh:minCount 1 ;
     sh:maxCount 1 ;
   ],  [
-    sh:path secuman:hasSecuritySDA ;
-    sh:message "Every controlled security risk must have exactly one security sda." ;  
+    sh:path secuman:isMitigatedBy ;
+    sh:message "Every controlled security risk must have exactly one secure design argument." ;  
     sh:minCount 1 ;
     sh:maxCount 1 ;
   ]
@@ -211,9 +211,9 @@
 
 ### SDAs
 
-  :SecuritySDAShape
+  :SecDAShape
   a sh:NodeShape ;
-  sh:targetClass secuman:SecuritySDA ;
+  sh:targetClass secuman:SecDA ;
   sh:property [
     sh:path secuman:hasSecurityFacet ;
     sh:message "Every security  SDA must have at least one security facet" ;  
