@@ -75,6 +75,33 @@
 
 ### Context
 
+:ContextSpecificThreatShape
+  a sh:NodeShape ;
+  sh:targetClass secuman:ContextSpecificThreat ;
+  sh:property [
+    sh:path secuman:hasOperatingEnvironment ;
+    sh:message "Every context specific threat must have exactly one operating environment." ;  
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+  ], [
+    sh:path secuman:hasProduct ;
+    sh:message "Every context specific threat must have exactly one product." ;  
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+  ], [
+    sh:path secuman:hasAttackType ;
+    sh:message "Every context specific threat must have exactly one attack type." ;  
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+  ], [
+    sh:path secuman:hasProtectionGoal ;
+    sh:message "Every context specific threat must have exactly one protection goal." ;  
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+  ] 
+. 
+
+
 :OperatingEnvironmentShape
   a sh:NodeShape ;
   sh:targetClass secuman:OperatingEnvironment ;
@@ -117,31 +144,7 @@
   ]
 . 
 
-:ContextSpecificThreatShape
-  a sh:NodeShape ;
-  sh:targetClass secuman:ContextSpecificThreat ;
-  sh:property [
-    sh:path secuman:hasOperatingEnvironment ;
-    sh:message "Every context specific threat must have exactly one operating environment." ;  
-    sh:minCount 1 ;
-    sh:maxCount 1 ;
-  ], [
-    sh:path secuman:hasProduct ;
-    sh:message "Every context specific threat must have exactly one product." ;  
-    sh:minCount 1 ;
-    sh:maxCount 1 ;
-  ], [
-    sh:path secuman:hasAttackType ;
-    sh:message "Every context specific threat must have exactly one attack type." ;  
-    sh:minCount 1 ;
-    sh:maxCount 1 ;
-  ], [
-    sh:path secuman:hasProtectionGoal ;
-    sh:message "Every context specific threat must have exactly one protection goal." ;  
-    sh:minCount 1 ;
-    sh:maxCount 1 ;
-  ] 
-. 
+#Note: may not work for all validators, could also rather verify in ContextSpecificThreat shape
 
 :ProtectionGoalShape
     a sh:NodeShape ;

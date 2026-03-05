@@ -164,7 +164,7 @@ _:secunet
             rdfs:label "has vulnerabiility level" .
 
 
-        ###  http://example.com/secuman/ontology#isAffected
+###  http://example.com/secuman/ontology#isAffected
 :isAffected rdf:type owl:DatatypeProperty ;
             rdfs:domain :ImpactAssessment ;
             rdfs:range xsd:boolean ;
@@ -174,12 +174,37 @@ _:secunet
 
 ### Context
 
-###  http://example.com/secuman/ontology#hasPhysicalSecurity
-:hasPhysicalSecurity rdf:type owl:ObjectProperty ;
-            rdfs:domain :OperatingEnvironment ;
-            rdfs:range :PhysicalSecurity ;
-            rdfs:comment "Links an operating environment to its physical security." ;
-            rdfs:label "has physical security" .
+###  http://example.com/secuman/ontology#hasAttackType
+:hasAttackType rdf:type owl:ObjectProperty ;
+            rdfs:domain :ContextSpecificThreat ;
+            rdfs:range :AttackType ;
+            rdfs:comment "Links a context specific threat to its attack type." ;
+            rdfs:label "has attack type" .
+
+###  http://example.com/secuman/ontology#hasDataSecurityAndPrivacy
+:hasDataSecurityAndPrivacy rdf:type owl:ObjectProperty ;
+            rdfs:domain :Product ;
+            rdfs:range :DataSecurityAndPrivacy ;
+            rdfs:comment "Links a product to its data security and privacy." ;
+            rdfs:label "has data security and privacy" .
+
+
+###  http://example.com/secuman/ontology#hasIdentityAndAccessManagement
+:hasIdentityAndAccessManagement rdf:type owl:ObjectProperty ;
+            rdfs:domain :Product ;
+            rdfs:range :IdentityAndAccessManagement ;
+            rdfs:comment "Links a product to its identity and access management." ;
+            rdfs:label "has identity and access management" .
+
+###  http://example.com/secuman/ontology#hasOperationsAndMaintenance
+:hasOperationsAndMaintenance rdf:type owl:ObjectProperty ;
+            rdfs:domain :Product ;
+            rdfs:range :OperationsAndMaintenance ;
+            rdfs:comment "Links a product to its operations and maintenance." ;
+            rdfs:label "has operations and maintenance" .
+
+
+
 
 ###  http://example.com/secuman/ontology#hasNetworkSecurity
 :hasNetworkSecurity rdf:type owl:ObjectProperty ;
@@ -187,6 +212,35 @@ _:secunet
             rdfs:range :NetworkSecurity ;
             rdfs:comment "Links an operating environment to its network security." ;
             rdfs:label "has network security" .
+
+###  http://example.com/secuman/ontology#hasOperatingEnvironment
+:hasOperatingEnvironment rdf:type owl:ObjectProperty ;
+            rdfs:domain :ContextSpecificThreat ;
+            rdfs:range :OperatingEnvironment ;
+            rdfs:comment "Links a context specific threat to its operating environment." ;
+            rdfs:label "has operating environment" .
+
+###  http://example.com/secuman/ontology#hasPhysicalSecurity
+:hasPhysicalSecurity rdf:type owl:ObjectProperty ;
+            rdfs:domain :OperatingEnvironment ;
+            rdfs:range :PhysicalSecurity ;
+            rdfs:comment "Links an operating environment to its physical security." ;
+            rdfs:label "has physical security" .
+
+###  http://example.com/secuman/ontology#hasProduct
+:hasProduct rdf:type owl:ObjectProperty ;
+            rdfs:domain :ContextSpecificThreat ;
+            rdfs:range :Product ;
+            rdfs:comment "Links a context specific threat to its product." ;
+            rdfs:label "has product" .
+
+###  http://example.com/secuman/ontology#hasProtectionGoal
+:hasProtectionGoal rdf:type owl:ObjectProperty ;
+            rdfs:domain :ContextSpecificThreat ;
+            rdfs:range :ProtectionGoal ;
+            rdfs:comment "Links a context specific threat to its protection goal." ;
+            rdfs:label "has protection goal" .
+
 
 
 ###  http://example.com/secuman/ontology#hasSystemAndPlatformSecurity
@@ -196,55 +250,12 @@ _:secunet
             rdfs:comment "Links an operating environment to its system and platform security." ;
             rdfs:label "has system and platform security" .
 
-###  http://example.com/secuman/ontology#hasIdentityAndAccessManagement
-:hasIdentityAndAccessManagement rdf:type owl:ObjectProperty ;
-            rdfs:domain :Product ;
-            rdfs:range :IdentityAndAccessManagement ;
-            rdfs:comment "Links a product to its identity and access management." ;
-            rdfs:label "has identity and access management" .
-
-###  http://example.com/secuman/ontology#hasDataSecurityAndPrivacy
-:hasDataSecurityAndPrivacy rdf:type owl:ObjectProperty ;
-            rdfs:domain :Product ;
-            rdfs:range :DataSecurityAndPrivacy ;
-            rdfs:comment "Links a product to its data security and privacy." ;
-            rdfs:label "has data security and privacy" .
-
-###  http://example.com/secuman/ontology#hasOperationsAndMaintenance
-:hasOperationsAndMaintenance rdf:type owl:ObjectProperty ;
-            rdfs:domain :Product ;
-            rdfs:range :OperationsAndMaintenance ;
-            rdfs:comment "Links a product to its operations and maintenance." ;
-            rdfs:label "has operations and management" .
 
 
-###  http://example.com/secuman/ontology#hasOperatingEnvironment
-:hasOperatingEnvironment rdf:type owl:ObjectProperty ;
-            rdfs:domain :ContextSpecificThreat ;
-            rdfs:range :OperatingEnvironment ;
-            rdfs:comment "Links a context specific threat to its operating environment." ;
-            rdfs:label "has operating environment" .
 
-###  http://example.com/secuman/ontology#hasProduct
-:hasProduct rdf:type owl:ObjectProperty ;
-            rdfs:domain :ContextSpecificThreat ;
-            rdfs:range :Product ;
-            rdfs:comment "Links a context specific threat to its product." ;
-            rdfs:label "has product" .
 
-###  http://example.com/secuman/ontology#hasAttackType
-:hasAttackType rdf:type owl:ObjectProperty ;
-            rdfs:domain :ContextSpecificThreat ;
-            rdfs:range :AttackType ;
-            rdfs:comment "Links a context specific threat to its attack type." ;
-            rdfs:label "has attack type" .
 
-###  http://example.com/secuman/ontology#hasProtectionGoal
-:hasProtectionGoal rdf:type owl:ObjectProperty ;
-            rdfs:domain :ContextSpecificThreat ;
-            rdfs:range :ProtectionGoal ;
-            rdfs:comment "Links a context specific threat to its protection goal." ;
-            rdfs:label "has protection goal" .
+
 
 
 ### Assessment
@@ -451,6 +462,29 @@ _:secunet
 ### Context
 
 
+###  http://example.com/secuman/ontology#ContextSpecificThreat
+:ContextSpecificThreat rdf:type owl:Class ;
+    rdfs:label "Context specific threat" ;
+    rdfs:comment "Context specific threat: operating environment, product, attack type, protection goal" .
+
+[ owl:intersectionOf ( [ rdf:type owl:Restriction ;
+                            owl:onProperty :hasOperatingEnvironment;
+                            owl:someValuesFrom owl:Thing
+                        ]
+                        [ rdf:type owl:Restriction ;
+                            owl:onProperty :hasProduct;
+                            owl:someValuesFrom owl:Thing
+                        ]
+                        [ rdf:type owl:Restriction ;
+                            owl:onProperty :hasAttackType;
+                            owl:someValuesFrom owl:Thing
+                        ]
+                        [ rdf:type owl:Restriction ;
+                            owl:onProperty :hasProtectionGoal;
+                            owl:someValuesFrom owl:Thing
+                        ] ) ;
+] rdfs:subClassOf :ContextSpecificThreat.
+
 ###  http://example.com/secuman/ontology#OperatingEnvironment
 :OperatingEnvironment rdf:type owl:Class ;
     rdfs:label "Operating environment" ;
@@ -474,7 +508,7 @@ _:secunet
 ###  http://example.com/secuman/ontology#Product
 :Product rdf:type owl:Class ;
     rdfs:label "Product" ;
-    rdfs:comment "Product: identity and access management, data security and privacy, operations and maintance" .
+    rdfs:comment "Product: identity and access management, data security and privacy, operations and maintenance" .
 
 [ owl:intersectionOf ( [ rdf:type owl:Restriction ;
                             owl:onProperty :hasIdentityAndAccessManagement;
@@ -492,28 +526,7 @@ _:secunet
 
 
 
-###  http://example.com/secuman/ontology#ContextSpecificThreat
-:ContextSpecificThreat rdf:type owl:Class ;
-    rdfs:label "Context specific threat" ;
-    rdfs:comment "Context specific threat: operating environment, product, attack type, protection goal" .
 
-[ owl:intersectionOf ( [ rdf:type owl:Restriction ;
-                            owl:onProperty :hasOperatingEnvironment;
-                            owl:someValuesFrom owl:Thing
-                        ]
-                        [ rdf:type owl:Restriction ;
-                            owl:onProperty :hasProduct;
-                            owl:someValuesFrom owl:Thing
-                        ]
-                        [ rdf:type owl:Restriction ;
-                            owl:onProperty :hasAttackType;
-                            owl:someValuesFrom owl:Thing
-                        ]
-                        [ rdf:type owl:Restriction ;
-                            owl:onProperty :hasProtectionGoal;
-                            owl:someValuesFrom owl:Thing
-                        ] ) ;
-] rdfs:subClassOf :ContextSpecificThreat.
 
 
 ### Assessment
@@ -687,10 +700,4 @@ _:secunet
 :Integrity rdf:type owl:NamedIndividual , :ProtectionGoal ;
                           rdfs:label "Integrity" .
 
-###  http://example.com/secuman/ontology#Yes
-:Yes rdf:type owl:NamedIndividual , :YesNo ;
-                          rdfs:label "Yes" .
 
-###  http://example.com/secuman/ontology#No
-:No rdf:type owl:NamedIndividual , :YesNo ;
-                          rdfs:label "No" .
