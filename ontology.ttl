@@ -9,7 +9,7 @@
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix schema: <https://schema.org/> .
 @prefix vann: <http://purl.org/vocab/vann/> .
-@prefix riskman: <https://w3id.org/riskman/ontology#> .  
+#@prefix riskman: <https://w3id.org/riskman/ontology#> .  
 @base <http://example.com/secuman/ontology#> .
 
 <http://example.com/secuman/ontology#> 
@@ -24,48 +24,25 @@
                                       dcterms:created "2025-08-20"^^xsd:date ;
    #                                   dcterms:issued "2025-08-20"^^xsd:date ;
     #                                  ns:status "Published" ;
-   #                                   dcterms:source <https://w3id.org/riskman/repo/> ;
-    #                                  schema:citation "Gorczyca, P., Arndt, D., Diller, M., Hampe, J., Heidenreich, G., Kettmann, P., Krötzsch, M., Mennicke, S., Rudolph, S., & Strass, H. (2025). Supporting Risk Management for Medical Devices via the RISKMAN Ontology and Shapes. To appear in Proceedings of the 21st International Conference on Semantic Systems (SEMANTiCS 2025), Vienna, Austria, September 03–05, 2025." ;
- #                                     schema:logo <https://raw.githubusercontent.com/cl-tud/riskman/refs/heads/main/assets/riskman_green.png> ;
+   #                                   dcterms:source <https://w3id.org/secuman/repo/> ;
+    #                                  schema:citation "" ;
+ #                                     schema:logo <https://raw.githubusercontent.com/cl-tud/secuman/refs/heads/main/assets/secuman_green.png> ;
                                       owl:versionInfo "0.0.0" ;
                                       rdfs:label "The Secuman Ontology" ;
-#                                      rdfs:seeAlso <https://w3id.org/riskman/> ;
+#                                      rdfs:seeAlso <https://w3id.org/secuman/> ;
                                       schema:dateModified "2025-08-22"^^xsd:date ;
                                       vann:preferredNamespacePrefix "secuman"  ;
                                       vann:preferredNamespaceURI <http://example.com/secuman/ontology#> ;
-                                        dcterms:creator _:person_arndt, _:person_diller, _:person_gorczyca, _:person_kettmann, _:person_mennicke, _:person_strass ;
-                                       dcterms:author _:person_arndt, _:person_diller, _:person_gorczyca, _:person_kettmann, _:person_mennicke, _:person_strass ;
+                                        dcterms:creator  _:person_diller, _:person_strass ;
+                                       dcterms:author  _:person_diller,  _:person_strass ;
                                       dcterms:contributor _:person_esslinger, _:person_hartig, _:person_heidenreich, _:person_mehr  . 
 
 # Named blank nodes for creators/authors
-_:person_arndt
-    a schema:Person ;
-    schema:name "Dörthe Arndt" ;
-    schema:url <https://iccl.inf.tu-dresden.de/web/D%C3%B6rthe_Arndt/en> ;
-    schema:affiliation _:iccl_tud .
 
 _:person_diller
     a schema:Person ;
     schema:name "Martin Diller" ;
     schema:url <https://iccl.inf.tu-dresden.de/web/Martin_Diller/en> ;
-    schema:affiliation _:iccl_tud .
-
-_:person_gorczyca
-    a schema:Person ;
-    schema:name "Piotr Gorczyca" ;
-    schema:url <https://iccl.inf.tu-dresden.de/web/Piotr_Gorczyca/en> ;
-    schema:affiliation _:iccl_tud .
-
-_:person_kettmann
-    a schema:Person ;
-    schema:name "Pascal Kettmann" ;
-    schema:url <https://iccl.inf.tu-dresden.de/web/Pascal_Kettmann/en> ;
-    schema:affiliation _:iccl_tud .
-
-_:person_mennicke
-    a schema:Person ;
-    schema:name "Stephan Mennicke" ;
-    schema:url <https://iccl.inf.tu-dresden.de/web/Stephan_Mennicke/en> ;
     schema:affiliation _:iccl_tud .
 
 _:person_strass
@@ -83,8 +60,6 @@ _:person_esslinger
     a schema:Person ;
     schema:name "Anne Eßlinger" ;
     schema:affiliation _:ekfz .
-
-
 
 _:person_heidenreich
     a schema:Person ;
@@ -117,12 +92,58 @@ _:secunet
     schema:name "Secunet AG" .
 
 
-
 ################################################################
-#    Object Properties
+#    Object and Datatype Properties
 #################################################################
 
 ### General
+
+###  http://example.com/secuman/ontology#hasAttackerProfile
+:hasAttackerProfile rdf:type owl:ObjectProperty ;
+            rdfs:domain :LikelihoodFactor ;
+            rdfs:range :AttackerProfile ;
+            rdfs:comment "Links a likelihood factor to its attacker profile." ;
+            rdfs:label "has attacker profile" .
+
+
+
+###  http://example.com/secuman/ontology#hasImpactLevel
+:hasImpactLevel rdf:type owl:ObjectProperty ;
+            rdfs:domain :SecurityRiskLevel ;
+            rdfs:range :ImpactLevel ;
+            rdfs:comment "Links a security risk level to its impact level." ;
+            rdfs:label "has impact level" .
+
+###  http://example.com/secuman/ontology#hasLikelihoodFactor
+:hasLikelihoodFactor rdf:type owl:ObjectProperty ;
+            rdfs:domain :SecurityRiskLevel ;
+            rdfs:range :LikelihoodFactor ;
+            rdfs:comment "Links a security risk level to its likelihood factor." ;
+            rdfs:label "has likelihood factor" .
+
+
+###  http://example.com/secuman/ontology#hasRationale
+:hasRationale rdf:type owl:ObjectProperty ;
+            rdfs:domain :ImpactAssessment ;
+            rdfs:range :Rationale ;
+            rdfs:comment "Links an impact assessment to its rationale." ;
+            rdfs:label "has rationale" .
+
+
+###  http://example.com/secuman/ontology#hasSafetyImpactAssessment
+:hasSafetyImpactAssessment rdf:type owl:ObjectProperty ;
+            rdfs:domain :ImpactAssessmentDomain ;
+            rdfs:range :ImpactAssessment ;
+            rdfs:comment "Links an impact assessment domain (impact or SecDA) to its safety impact assessment." ;
+            rdfs:label "has safety impact assessment" .
+
+
+###  http://example.com/secuman/ontology#hasSecurityImpactAssessment
+:hasSecurityImpactAssessment rdf:type owl:ObjectProperty ;
+            rdfs:domain :ImpactAssessmentDomain ;
+            rdfs:range :ImpactAssessment ;
+            rdfs:comment "Links an impact assessment domain (impact or SecDA) to its security impact assessment." ;
+            rdfs:label "has security impact assessment" .
 
 
 
@@ -134,37 +155,21 @@ _:secunet
             rdfs:label "has security risk level" .
 
 
-###  http://example.com/secuman/ontology#hasImpactLevel
-:hasImpactLevel rdf:type owl:ObjectProperty ;
-            rdfs:domain :SecurityRiskLevel ;
-            rdfs:range :ImpactLevel ;
-            rdfs:comment "Links a security risk level to its impact level." ;
-            rdfs:label "has impact level" .
-
-
-###  http://example.com/secuman/ontology#hasLikelihoodFactor
-:hasLikelihoodFactor rdf:type owl:ObjectProperty ;
-            rdfs:domain :SecurityRiskLevel ;
-            rdfs:range :LikelihoodFactor ;
-            rdfs:comment "Links a security risk level to its likelihood factor." ;
-            rdfs:label "has likelihood factor" .
-
-
-
-
-###  http://example.com/secuman/ontology#hasAttackerProfile
-:hasAttackerProfile rdf:type owl:ObjectProperty ;
-            rdfs:domain :LikelihoodFactor ;
-            rdfs:range :AttackerProfile ;
-            rdfs:comment "Links a likelihood factor to its attacker profile." ;
-            rdfs:label "has attacker profile" .
 
 ###  http://example.com/secuman/ontology#hasVulnerabilityLevel
 :hasVulnerabilityLevel rdf:type owl:ObjectProperty ;
             rdfs:domain :LikelihoodFactor ;
             rdfs:range :VulnerabilityLevel ;
             rdfs:comment "Links a likelihood factor to its vulnerability level." ;
-            rdfs:label "has vulnerabitiliy level" .
+            rdfs:label "has vulnerabiility level" .
+
+
+        ###  http://example.com/secuman/ontology#isAffected
+:isAffected rdf:type owl:DatatypeProperty ;
+            rdfs:domain :ImpactAssessment ;
+            rdfs:range xsd:boolean ;
+            rdfs:comment "Indicates whether the aspect under consideration (e.g., safety, security) is affected." ;
+            rdfs:label "is affected" .
 
 
 ### Context
@@ -385,6 +390,22 @@ _:secunet
 
 ### General
 
+
+###  http://example.com/secuman/ontology#LikelihoodFactor
+:LikelihoodFactor rdf:type owl:Class ;
+    rdfs:label "Likelihood factor" ;
+    rdfs:comment "Likelihood factor: attacker profile, vulnerability level" .
+
+[ owl:intersectionOf ( [ rdf:type owl:Restriction ;
+                            owl:onProperty :hasAttackerProfile;
+                            owl:someValuesFrom owl:Thing
+                        ]
+                        [ rdf:type owl:Restriction ;
+                            owl:onProperty :hasVulnerabilityLevel;
+                            owl:someValuesFrom owl:Thing
+                        ] ) ;
+] rdfs:subClassOf :LikelihoodFactor.
+
 ###  http://example.com/secuman/ontology#SecurityRisk
 :SecurityRisk rdf:type owl:Class ;
     rdfs:label "Security risk" ;
@@ -414,30 +435,14 @@ _:secunet
                         ] ) ;
 ] rdfs:subClassOf :SecurityRiskLevel.
 
-###  http://example.com/secuman/ontology#LikelihoodFactor
-:LikelihoodFactor rdf:type owl:Class ;
-    rdfs:label "Likelihood factor" ;
-    rdfs:comment "Likelihood factor: attacker profile, vulnerability level" .
 
-[ owl:intersectionOf ( [ rdf:type owl:Restriction ;
-                            owl:onProperty :hasAttackerProfile;
-                            owl:someValuesFrom owl:Thing
-                        ]
-                        [ rdf:type owl:Restriction ;
-                            owl:onProperty :hasVulnerabilityLevel;
-                            owl:someValuesFrom owl:Thing
-                        ] ) ;
-] rdfs:subClassOf :LikelihoodFactor.
 
 ###  http://example.com/secuman/ontology#HasImpactOnSafetyDomain
-:HasImpactOnSafetyDomain a owl:Class .
-:LikelihoodFactor rdf:type owl:Class ;
-    rdfs:label "Has impact on safety domain" ;
-    rdfs:comment "Has impact on safety domain: auxiliary class to define domain of has impact on safety" .
-
-
-:SecuritySDA rdfs:subClassOf :HasImpactOnSafetyDomain .
-:Impact      rdfs:subClassOf :HasImpactOnSafetyDomain .
+#:HasImpactOnSafetyDomain a owl:Class .
+#    rdfs:label "Has impact on safety domain" ;
+#    rdfs:comment "Has impact on safety domain: auxiliary class to define domain of has impact on safety" .
+#:SecuritySDA rdfs:subClassOf :HasImpactOnSafetyDomain .
+#:Impact      rdfs:subClassOf :HasImpactOnSafetyDomain .
 
 
 

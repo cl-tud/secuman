@@ -9,14 +9,52 @@
 
 ### General
 
-:YesNoShape
-    a sh:NodeShape ;
-    sh:targetClass secuman:YesNo ;
-    sh:in ( secuman:Yes secuman:No ) ;
-    sh:message "A YesNO must be one of Yes or No" .
+
+:ImpactAssessmentShape
+  a sh:NodeShape ;
+  sh:targetClass secuman:ImpactAssessment ;
+  sh:property [
+    sh:path secuman:isAffected ;
+    sh:message "Every impact assessment must have exactly one value (true or false) for is affected." ;  
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+  ],  [
+    sh:path secuman:hasRationale ;
+    sh:message "Every impact assessment must have at most one rationale." ;  
+    sh:maxCount 1 ;
+  ]
+. 
 
 
-  :SecurityRiskLevelShape
+:LikelihoodFactorShape
+  a sh:NodeShape ;
+  sh:targetClass secuman:LikelihoodFactor ;
+  sh:property [
+    sh:path secuman:hasAttackerProfile ;
+    sh:message "Every likelihood factor must have exactly one attacker profile." ;  
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+  ],  [
+    sh:path secuman:hasVulnerabilityLevel ;
+    sh:message "Every likelihood factor must have exactly one vulnerability level." ;  
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+  ]
+. 
+
+
+:SecurityRiskShape
+  a sh:NodeShape ;
+  sh:targetClass secuman:SecurityRisk ;
+  sh:property [
+    sh:path secuman:hasSecurityRiskLevel ;
+    sh:message "Every security risk must have exactly one security risk level." ;  
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+  ]
+. 
+
+:SecurityRiskLevelShape
   a sh:NodeShape ;
   sh:targetClass secuman:SecurityRiskLevel ;
   sh:property [
@@ -32,21 +70,7 @@
   ]
 . 
 
-  :LikelihoodFactorShape
-  a sh:NodeShape ;
-  sh:targetClass secuman:LikelihoodFactor ;
-  sh:property [
-    sh:path secuman:hasAttackerProfile ;
-    sh:message "Every likelihood factor must have exactly one attacker profile." ;  
-    sh:minCount 1 ;
-    sh:maxCount 1 ;
-  ],  [
-    sh:path secuman:hasVulnerabilityLevel ;
-    sh:message "Every likelihood factor must have exactly one vulnerability level." ;  
-    sh:minCount 1 ;
-    sh:maxCount 1 ;
-  ]
-. 
+
 
 
 ### Context
