@@ -211,6 +211,21 @@
 
 ### SDAs
 
+:AssuranceSecDAShape
+  a sh:NodeShape ;
+  sh:targetClass secuman:AssuranceSecDA ;
+  sh:property [ 
+      sh:path secuman:hasAssurance ;
+      sh:message "Every assurance SecDA must have exactly one assurance." ;  
+      sh:minCount 1 ;
+      sh:maxCount 1 ;
+  ], [
+      sh:path secuman:hasSubSecDA  ;
+      sh:message "SubSecDAs of an AssuranceSecDA must again be AssuranceSecDAs." ;
+      sh:class secuman:AssuranceSecDA ;
+  ]
+.
+
   :SecDAShape
   a sh:NodeShape ;
   sh:targetClass secuman:SecDA ;
@@ -231,7 +246,7 @@
     sh:message "Every security  SDA must at most one location of intervention" ;  
     sh:maxCount 1 ;
   ] , [
-    sh:path secuman:hasOrganisationalContext ;
+    sh:path secuman:hasOrganisationalContextOfIntervention ;
     sh:message "Every security  SDA must at most one organisational context" ;  
     sh:maxCount 1 ;
   ] , [
