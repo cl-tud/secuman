@@ -260,6 +260,21 @@ _:secunet
 
 ### Assessment
 
+###  http://example.com/secuman/ontology#hasAsset
+:hasAsset rdf:type owl:ObjectProperty ;
+            rdfs:domain :AnalyzedSecurityRisk ;
+            rdfs:range :Asset ;
+            rdfs:comment "Links an analyzed security risk to its asset." ;
+            rdfs:label "has asset" .
+
+###  http://example.com/secuman/ontology#hasComponent
+:hasComponent rdf:type owl:ObjectProperty ;
+            rdfs:domain :AnalyzedSecurityRisk ;
+            rdfs:range :Component ;
+            rdfs:comment "Links an analyzed security risk to its component." ;
+            rdfs:label "has component" .
+
+
 ###  http://example.com/secuman/ontology#hasContextSpecificThreat
 :hasContextSpecificThreat rdf:type owl:ObjectProperty ;
             rdfs:domain :AnalyzedSecurityRisk ;
@@ -288,19 +303,7 @@ _:secunet
 
 
 
-###  http://example.com/secuman/ontology#hasComponent
-:hasComponent rdf:type owl:ObjectProperty ;
-            rdfs:domain :AnalyzedSecurityRisk ;
-            rdfs:range :Component ;
-            rdfs:comment "Links an analyzed security risk to its component." ;
-            rdfs:label "has component" .
 
-###  http://example.com/secuman/ontology#hasAsset
-:hasAsset rdf:type owl:ObjectProperty ;
-            rdfs:domain :AnalyzedSecurityRisk ;
-            rdfs:range :Asset ;
-            rdfs:comment "Links an analyzed security risk to its asset." ;
-            rdfs:label "has asset" .
 
 
 ### Control 

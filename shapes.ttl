@@ -156,7 +156,7 @@
 ### Assessment
 
 
-  :AnalyzedSecurityRiskShape
+:AnalyzedSecurityRiskShape
   a sh:NodeShape ;
   sh:targetClass secuman:AnalyzedSecurityRisk ;
   sh:property [
@@ -182,7 +182,7 @@
     sh:path secuman:hasAsset ;
     sh:message "Every analyzed security risk must have at least one asset." ;  
     sh:minCount 1 ;
-      ]
+  ]
 . 
 
 ### Control
