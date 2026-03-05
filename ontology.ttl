@@ -30,7 +30,7 @@
                                       owl:versionInfo "0.0.0" ;
                                       rdfs:label "The Secuman Ontology" ;
 #                                      rdfs:seeAlso <https://w3id.org/secuman/> ;
-                                      schema:dateModified "2025-08-22"^^xsd:date ;
+                                      schema:dateModified "2026-03-05"^^xsd:date ;
                                       vann:preferredNamespacePrefix "secuman"  ;
                                       vann:preferredNamespaceURI <http://example.com/secuman/ontology#> ;
                                         dcterms:creator  _:person_diller, _:person_strass ;
