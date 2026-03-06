@@ -226,41 +226,146 @@
   ]
 .
 
-  :SecDAShape
+
+:SecDAShape
   a sh:NodeShape ;
   sh:targetClass secuman:SecDA ;
-  sh:property [
-    sh:path secuman:hasSecurityFacet ;
-    sh:message "Every security  SDA must have at least one security facet" ;  
-    sh:minCount 1 ;
-  ] , [
-    sh:path secuman:hasStrategy ;
-    sh:message "Every security  SDA must at most one strategy" ;  
-    sh:maxCount 1 ;
-  ] , [
-    sh:path secuman:hasInterventionMethod ;
-    sh:message "Every security  SDA must at most one intervention method" ;  
-    sh:maxCount 1 ;
-  ] , [
-    sh:path secuman:hasLocationOfIntervention ;
-    sh:message "Every security  SDA must at most one location of intervention" ;  
-    sh:maxCount 1 ;
-  ] , [
-    sh:path secuman:hasOrganisationalContextOfIntervention ;
-    sh:message "Every security  SDA must at most one organisational context" ;  
-    sh:maxCount 1 ;
-  ] , [
-    sh:path secuman:hasAssumption ;
-    sh:message "Every security  SDA must at most one assumption" ;  
-    sh:maxCount 1 ;
-  ] , [
-    sh:path secuman:hasImpactOnSafety ;
-    sh:message "Every security  SDA must at most one impact on safety" ;  
-    sh:maxCount 1 ;
-  ], [
-    sh:path secuman:hasTestReport ;
-    sh:message "Every security  SDA must at most one test report" ;  
-    sh:maxCount 1 ;
-  ]
-. 
 
+  # Unconditional cardinalities
+  sh:property [
+    sh:path secuman:hasStrategy ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+  ] ;
+  sh:property [ sh:path secuman:hasInterventionMethod ; sh:maxCount 1 ] ;
+  sh:property [ sh:path secuman:hasOrganisationalContextOfIntervention ; sh:maxCount 1 ] ;
+  sh:property [ sh:path secuman:hasLocationOfIntervention ; sh:maxCount 1 ] ;
+  sh:property [ sh:path secuman:hasAssumption ; sh:maxCount 1 ] ;
+  sh:property [ sh:path secuman:hasSafetyImpactAssessment ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path secuman:hasSecurityImpactAssessment ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path secuman:hasImplementationManifest ; sh:maxCount 1 ] ;
+  sh:property [ sh:path secuman:hasAssurance ; sh:maxCount 1 ] ;
+
+  # ∃ hasSubSecDA*.SecDAI
+  sh:property [
+    sh:path [ sh:zeroOrMorePath secuman:hasSubSecDA ] ;
+    sh:qualifiedValueShape [ sh:class secuman:SecDAI ] ;
+    sh:qualifiedMinCount 1 ;
+    sh:message "Every SecDA needs a final mitigation (which has the Implementation Manifest)." ;
+  ] ;
+
+  # (≤0 hasSubSecDA−) ⇒ (=1 hasTestReport)
+  sh:or ( :NotTopSecDA  :TopSecDAAndOneTestReport ) ;
+
+  # (≥1 hasSubSecDA−) ⇒ (≤0 hasTestReport)
+  sh:or ( :TopSecDA  :NotTopSecDAAndNoTestReport ) ;
+
+  # (≥1 hasSubSecDA−) ⇒ (=1 hasInterventionMethod)
+  sh:or ( :TopSecDA  :NotTopSecDAAndOneInterventionMethod ) ;
+
+  # (≤0 hasSubSecDA) ⇒ (=1 hasInterventionMethod)
+  sh:or ( :HasSubSecDA :NotHasSubSecDAAndOneInterventionMethod ) ;
+
+  # (≥1 hasSubSecDA−) ⇒ (=1 hasOrganisationalContextOfIntervention)
+  sh:or ( :TopSecDA  :NotTopSecDAAndOneOrgContext ) ;
+
+  # (≤0 hasSubSecDA) ⇒ (=1 hasOrganisationalContextOfIntervention)
+  sh:or ( :HasSubSecDA :NotHasSubSecDAAndOneOrgContext ) ;
+.
+
+# Helper shapes 
+
+# ≥1 hasSubSecDA−.⊤
+:NotTopSecDA
+  a sh:NodeShape ;
+  sh:property [
+    sh:path [ sh:inversePath secuman:hasSubSecDA ] ;
+    sh:minCount 1 ;
+  ] .
+
+# Negation of incoming condition: ≤0 hasSubSecDA−.⊤
+:TopSecDA
+  a sh:NodeShape ;
+  sh:property [
+    sh:path [ sh:inversePath secuman:hasSubSecDA ] ;
+    sh:maxCount 0 ;
+  ] .
+
+# Outgoing condition: ≥1 hasSubSecDA.⊤  (used as ¬(≤0 outgoing))
+:HasSubSecDA
+  a sh:NodeShape ;
+  sh:property [
+    sh:path secuman:hasSubSecDA ;
+    sh:minCount 1 ;
+  ] .
+
+:TopSecDAAndOneTestReport
+  a sh:NodeShape ;
+  sh:property [
+    sh:path [ sh:inversePath secuman:hasSubSecDA ] ;
+    sh:maxCount 0 ;
+  ] ;
+  sh:property [
+    sh:path secuman:hasTestReport ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:message "If the SecDA is a top SecDA, there must be exactly one test report." ;
+  ] .
+
+:NotTopSecDAAndNoTestReport
+  a sh:NodeShape ;
+  sh:property [
+    sh:path [ sh:inversePath secuman:hasSubSecDA ] ;
+    sh:minCount 1 ;
+  ] ;
+  sh:property [
+    sh:path secuman:hasTestReport ;
+    sh:maxCount 0 ;
+    sh:message "If the SecDA is not a top SecDA, there must be no test report." ;
+  ] .
+
+:NotTopSecDAAndOneInterventionMethod
+  a sh:NodeShape ;
+  sh:property [
+    sh:path [ sh:inversePath secuman:hasSubSecDA ] ;
+    sh:minCount 1 ;
+  ] ;
+  sh:property [
+    sh:path secuman:hasInterventionMethod ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:message "If the SecDA is not a top SecDA, there must be one intervention method." ;
+  ] .
+
+:NotHasSubSecDAAndOneInterventionMethod
+  a sh:NodeShape ;
+  sh:property [
+    sh:path secuman:hasSubSecDA ;
+    sh:maxCount 0 ;
+  ] ;
+  sh:property [
+    sh:path secuman:hasInterventionMethod ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:message "If the SecDA does not have subSecDAs (in particular, it is a top singleton SecDA), there must be one intervention method." ;
+  ] .
+
+:NotTopSecDAAndOneOrgContext
+  a sh:NodeShape ;
+  sh:property [
+    sh:path [ sh:inversePath secuman:hasSubSecDA ] ;
+    sh:minCount 1 ;
+  ] ;
+  sh:property [
+    sh:path secuman:hasOrganisationalContextOfIntervention ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:message "If the SecDA is not a top SecDA, there must be one organisational context of intervention." ;
+  ] .
+
+:NotHasSubSecDAAndOneOrgContext
+  a sh:NodeShape ;
+  sh:property [
+    sh:path secuman:hasSubSecDA ;
+    sh:maxCount 0 ;
+  ] ;
+  sh:property [
+    sh:path secuman:hasOrganisationalContextOfIntervention ;
+    sh:minCount 1 ; sh:maxCount 1 ;
+    sh:message "If the SecDA does not have subSecDAs (in particular, it is a top singleton SecDA), there must be one organisational context of intervention." ;
+  ] .
