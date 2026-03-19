@@ -209,7 +209,7 @@
   ]
 . 
 
-### SDAs
+### SecDAs
 
 :AssuranceSecDAShape
   a sh:NodeShape ;
@@ -270,36 +270,65 @@
     sh:qualifiedValueShape [ sh:class secuman:SecDAI ] ;
     sh:qualifiedMinCount 1 ;
     sh:message "Every SecDA needs a final mitigation (which has the Implementation Manifest)." ;
-  ] ;
+  ] 
+  .
 
-  # (≤0 hasSubSecDA−) ⇒ (=1 hasTestReport)
-  sh:or ( :NotTopSecDA  :TopSecDAAndOneTestReport ) ;
-  sh:message "A SecDA must either not be a top SecDA, or, if it is a top SecDA, it must have exactly one test report." ;  
-
-  # (≥1 hasSubSecDA−) ⇒ (≤0 hasTestReport)
-  sh:or ( :TopSecDA  :NotTopSecDAAndNoTestReport ) ;
-  sh:message "A SecDA that is not a top SecDA must not have a test report." ;
-
-  sh:or ( :NotLeafSecDA  :LeafSecDAAndOneInterventionMethod ) ;
-  sh:message "A leaf SecDA must have exactly one intervention method." ;
-  
-  sh:or ( :LeafSecDA  :NotLeafSecDAAndNoInterventionMethod ) ;
-  sh:message "A non-leaf SecDA must not have an intervention method." ;
-  
-  sh:or ( :NotLeafSecDA  :LeafSecDAAndOneOrganisationalContextOfIntervention ) ;
-  sh:message "A leaf SecDA must have exactly one organisational context of intervention." ;
-  
-  sh:or ( :LeafSecDA  :NotLeafSecDAAndNoOrganisationalContextOfIntervention ) ;
-  sh:message "A non-leaf SecDA must not have an organisational context of intervention." ;
-
-  sh:or ( :LeafSecDA  :NotLeafSecDAAndNoLocationOfIntervention ) ;
-  sh:message "A non-leaf SecDA must not have a location of intervention." ;
-
-  sh:or ( :LeafSecDA  :NotLeafSecDAAndNoAssumption ) ;  
-  sh:message "A non-leaf SecDA must not have an assumption." ;
-
-
+  :TopSecDARequiresOneTestReportShape
+  a sh:NodeShape ;
+  sh:targetClass secuman:SecDA ;
+  sh:or ( :NotTopSecDA :TopSecDAAndOneTestReport ) ;
+  sh:message "A top SecDA must have exactly one test report." 
 .
+
+:NotTopSecDAMustNotHaveTestReportShape
+  a sh:NodeShape ;
+  sh:targetClass secuman:SecDA ;
+  sh:or ( :TopSecDA :NotTopSecDAAndNoTestReport ) ;
+  sh:message "A non-top SecDA must not have a test report." 
+.
+
+:LeafSecDARequiresOneInterventionMethodShape
+  a sh:NodeShape ;
+  sh:targetClass secuman:SecDA ;
+  sh:or ( :NotLeafSecDA :LeafSecDAAndOneInterventionMethod ) ;
+  sh:message "A leaf SecDA must have exactly one intervention method." 
+.
+
+:NonLeafSecDAMustNotHaveInterventionMethodShape
+  a sh:NodeShape ;
+  sh:targetClass secuman:SecDA ;
+  sh:or ( :LeafSecDA :NotLeafSecDAAndNoInterventionMethod ) ;
+  sh:message "A non-leaf SecDA must not have an intervention method." 
+.
+
+:LeafSecDARequiresOneOrganisationalContextOfInterventionShape
+  a sh:NodeShape ;
+  sh:targetClass secuman:SecDA ;
+  sh:or ( :NotLeafSecDA :LeafSecDAAndOneOrganisationalContextOfIntervention ) ;
+  sh:message "A leaf SecDA must have exactly one organisational context of intervention." 
+.
+
+:NonLeafSecDAMustNotHaveOrganisationalContextOfInterventionShape
+  a sh:NodeShape ;
+  sh:targetClass secuman:SecDA ;
+  sh:or ( :LeafSecDA :NotLeafSecDAAndNoOrganisationalContextOfIntervention ) ;
+  sh:message "A non-leaf SecDA must not have an organisational context of intervention." 
+.
+
+:NonLeafSecDAMustNotHaveLocationOfInterventionShape
+  a sh:NodeShape ;
+  sh:targetClass secuman:SecDA ;
+  sh:or ( :LeafSecDA :NotLeafSecDAAndNoLocationOfIntervention ) ;
+  sh:message "A non-leaf SecDA must not have a location of intervention." 
+.
+
+:NonLeafSecDAMustNotHaveAssumptionShape
+  a sh:NodeShape ;
+  sh:targetClass secuman:SecDA ;
+  sh:or ( :LeafSecDA :NotLeafSecDAAndNoAssumption ) ;
+  sh:message "A non-leaf SecDA must not have an assumption." 
+.
+
 
 # Helper shapes 
 
