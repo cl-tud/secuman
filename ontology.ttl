@@ -770,7 +770,6 @@ _:secunet
     :ContextSpecificThreat
     :DataSecurityAndPrivacy
     :IdentityAndAccessManagement
-    :Impact
     :ImpactAssessment
     :ImpactAssessmentDomain
     :ImpactLevel
@@ -786,7 +785,6 @@ _:secunet
     :Product
     :ProtectionGoal
     :Rationale
-    :SecDA
     :SecurityRisk
     :SecurityRiskLevel
     :Strategy
@@ -799,5 +797,6 @@ _:secunet
 
 :AnalyzedSecurityRisk owl:disjointWith :ControlledSecurityRisk .
 
+:Impact owl:disjointWith :SecDA .
 
 
