@@ -585,7 +585,7 @@ _:secunet
 ###  http://example.com/secuman/ontology#ControlledSecurityRisk
 :ControlledSecurityRisk rdf:type owl:Class ;
     rdfs:label "Controlled security risk" ;
-    rdfs:comment "Controlled security risk: analyzed security risk, residual security risk level, security risk sda" .
+    rdfs:comment "Controlled security risk: analyzed security risk, residual security risk level, secda" .
 
 [ owl:intersectionOf ( [ rdf:type owl:Restriction ;
                             owl:onProperty :hasAnalyzedSecurityRisk;
@@ -596,7 +596,7 @@ _:secunet
                             owl:someValuesFrom owl:Thing
                         ]
                         [ rdf:type owl:Restriction ;
-                            owl:onProperty :hasSecDA;
+                            owl:onProperty :isMitigatedBy;
                             owl:someValuesFrom owl:Thing
                         ] ) ;
 ] rdfs:subClassOf :ControlledSecurityRisk.
