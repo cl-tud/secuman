@@ -468,6 +468,17 @@ _:secunet
 
 
 
+###  http://example.com/secuman/ontology#ImpactAssessment
+:ImpactAssessment rdf:type owl:Class ;
+    rdfs:label "Impact assessment" ;
+    rdfs:comment "Impact assessment: is affected" .
+
+[ rdf:type owl:Restriction ;
+    owl:onProperty :isAffected ;
+    owl:someValuesFrom owl:Thing
+] rdfs:subClassOf :ImpactAssessment .
+
+
 ###  http://example.com/secuman/ontology#HasImpactOnSafetyDomain
 #:HasImpactOnSafetyDomain a owl:Class .
 #    rdfs:label "Has impact on safety domain" ;
