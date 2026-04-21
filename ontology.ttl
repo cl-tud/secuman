@@ -590,6 +590,9 @@ _:secunet
 ] rdfs:subClassOf :AnalyzedSecurityRisk.
 
 
+:Impact rdfs:subClassOf :ImpactAssessmentDomain .
+
+
 
 ### Control
 
@@ -722,6 +725,9 @@ _:secunet
                         ]
                     )         
 ] rdfs:subClassOf :SecDAI .
+
+
+:SecDA rdfs:subClassOf :ImpactAssessmentDomain .
   
   
 
